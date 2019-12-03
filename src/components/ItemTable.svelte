@@ -2,12 +2,12 @@
   export let items;
 </script>
 
-<table class="table-auto border-collapse border border-black w-4/5">
+<table class="table-fixed border-collapse border border-black w-full md:4/5">
   <thead>
     <tr>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Weight</th>
+      <th class="w-1/3">Item</th>
+      <th class="w-1/3">Quantity</th>
+      <th class="w-1/3">Weight</th>
     </tr>
   </thead>
   <tbody>
@@ -20,13 +20,13 @@
           <input
             type="number"
             bind:value={item.quantity}
-            class="bg-transparent " />
+            class="w-16 bg-transparent " />
         </td>
         <td>
           <input
             type="number"
             bind:value={item.weight}
-            class="bg-transparent " />
+            class="w-16 bg-transparent " />
         </td>
       </tr>
     {/each}

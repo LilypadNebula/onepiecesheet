@@ -17,7 +17,7 @@
           <input
             type="number"
             bind:value={stat.total}
-            class="w-16 bg-transparent border border-black rounded" />
+            class="w-16 bg-transparent rounded" />
         </td>
       </tr>
     {/each}

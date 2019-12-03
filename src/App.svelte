@@ -265,7 +265,7 @@
 
 <main class="text-xl md:text-2xl text-center p-4 flex flex-col">
   {#if character}
-    <div class="flex justify-around p-4">
+    <div class="row">
       <p>One Piece d20 Character Sheet</p>
       <button on:click={save}>Save</button>
       <button on:click={deleteChar}>Delete</button>
@@ -297,30 +297,32 @@
         bind:value={character.disadThree}
         fieldname={'Disadvantage #3'} />
     </div>
-    <div class="row">
+    <div class="row items-center">
       <NumberField bind:value={character.level} fieldname={'Level'} />
       <NumberField bind:value={character.experience} fieldname={'Experience'} />
       <NumberField
         bind:value={character.availableBeli}
         fieldname={'Available Beli'} />
     </div>
-    <div class="row flex-col">
-      <label>Notes</label>
-      <textarea
-        bind:value={character.notes}
-        class="border border-black rounded" />
+    <div class="row items-center">
+      <div class="flex flex-col w-2/3">
+        <label>Notes</label>
+        <textarea
+          bind:value={character.notes}
+          class="border border-black rounded" />
+      </div>
     </div>
-    <div class="row">
+    <div class="row items-center">
       <Attributes bind:attributes={character.attributes} />
       <Stats bind:stats={character.stats} />
       <Resistances bind:resistances={character.resistances} />
     </div>
-    <div class="row">
+    <div class="row justify-start items-start">
       <Skills
         bind:primarySkills={character.primarySkills}
         bind:secondarySkills={character.secondarySkills}
         attributes={character.attributes} />
-      <div class="flex flex-col w-1/2">
+      <div class="flex flex-col w-full md:w-1/3">
         <div class="flex w-full text-center justify-between">
           <button
             class="w-1/2"
@@ -344,12 +346,12 @@
       on:click={() => (character.feats = [...character.feats, { name: '', description: '' }])}>
       New Feat
     </button>
-    <div class="row flex-wrap">
+    <div class="row flex-wrap items-center justify-center">
       {#each character.feats as feat}
         <Feat {feat} />
       {/each}
     </div>
-    <div class="row flex-wrap">
+    <div class="row flex-wrap items-center justify-center">
       <ArmorCard armor={character.armor.head} location={'Head'} />
       <ArmorCard armor={character.armor.hand} location={'Hand'} />
       <ArmorCard armor={character.armor.body} location={'Body'} />
@@ -357,12 +359,13 @@
       <ArmorCard armor={character.armor.leg} location={'Leg'} />
       <ArmorCard armor={character.armor.other} location={'Other'} />
     </div>
-    <div class="row items-start">
+    <button
+      class="w-auto"
+      on:click={() => (character.items = [...character.items, { name: '', quantity: 0, weight: 0 }])}>
+      New Item
+    </button>
+    <div class="row">
       <ItemTable items={character.items} />
-      <button
-        on:click={() => (character.items = [...character.items, { name: '', quantity: 0, weight: 0 }])}>
-        New Item
-      </button>
     </div>
   {:else}Loading!{/if}
 </main>

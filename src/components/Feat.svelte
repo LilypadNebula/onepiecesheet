@@ -3,7 +3,7 @@
   export let feat;
 </script>
 
-<div class="border border-black rounded shadow my-1 p-4">
+<div class="border border-black rounded shadow my-1 p-2">
   <TextField bind:value={feat.name} fieldname={'Name'} />
   <textarea
     bind:value={feat.description}

@@ -4,16 +4,19 @@
 
 @import "tailwindcss/utilities";
 
+.row {
+  @apply flex flex-col justify-center my-2;
+}
+
+
+@screen md{
+  .row{
+    @apply flex-row justify-around;
+  }
+}
+
 body {
   background-color: hsl(222, 25%, 97%)
-}
-
-.row {
-  @apply flex justify-around my-2;
-}
-
-th, td {
-  @apply px-4 py-2;
 }
 
 tr {
@@ -21,5 +24,10 @@ tr {
 }
 
 table, thead, tr, th, tbody, td {
-  @apply rounded;
+  @apply rounded text-center;
 }
+
+input {
+  @apply text-center;
+}
+

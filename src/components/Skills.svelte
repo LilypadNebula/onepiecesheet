@@ -21,21 +21,23 @@
   };
 </script>
 
-<table class="table-fixed border-collapse border border-black">
+<table
+  class="text-sm md:text-2xl table-fixed border-collapse border border-black
+  w-full md:w-2/3">
   <thead>
     <tr>
-      <th>Skill Name</th>
-      <th>F</th>
-      <th>Base Att</th>
-      <th>Rank</th>
-      <th>Att. Mod</th>
-      <th>Bonus</th>
-      <th>Total</th>
+      <th style="width:17.28%">Skill Name</th>
+      <th style="width:17.28%">F</th>
+      <th style="width:17.28%">Base Att</th>
+      <th style="width:17.28%">Rank</th>
+      <th style="width:17.28%">Att. Mod</th>
+      <th style="width:17.28%">Bonus</th>
+      <th style="width:17.28%">Total</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th colspan="6">Primary Skills</th>
+      <th colspan="7">Primary Skills</th>
     </tr>
     {#each primarySkills as skill, i}
       <tr class={i % 2 != 0 ? '' : 'bg-gray-400'}>
@@ -55,14 +57,14 @@
           <input
             type="number"
             bind:value={skill.rank}
-            class="w-16 bg-transparent border border-black rounded" />
+            class="w-16 bg-transparent rounded" />
         </td>
         <td>{getAttMod(skill.baseAtt)}</td>
         <td>
           <input
             type="number"
             bind:value={skill.bonus}
-            class="w-16 bg-transparent border border-black rounded" />
+            class="w-16 bg-transparent rounded" />
         </td>
         <td>{skill.rank + skill.bonus + getAttMod(skill.baseAtt)}</td>
       </tr>

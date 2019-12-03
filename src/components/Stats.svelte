@@ -2,12 +2,14 @@
   export let stats;
 </script>
 
-<table class="table-auto border-collapse border border-black">
+<table
+  class="text-sm md:text-2xl table-fixed border-collapse border border-black
+  w-full md:w-auto my-2 ">
   <thead>
     <tr>
-      <th>Stat</th>
-      <th>Total</th>
-      <th>Current</th>
+      <th class="w-1/3 text-center">Stat</th>
+      <th class="w-1/3 text-center">Total</th>
+      <th class="w-1/3 text-center">Current</th>
     </tr>
   </thead>
   <tbody>
@@ -19,7 +21,7 @@
             <input
               type="number"
               bind:value={stat.total}
-              class="w-16 bg-transparent border border-black rounded" />
+              class="w-16 bg-transparent rounded" />
           {/if}
         </td>
         <td>
@@ -27,12 +29,12 @@
             {#if typeof stat.current === 'string'}
               <input
                 bind:value={stat.current}
-                class="w-32 text-xl bg-transparent border border-black rounded" />
+                class="w-32 text-xl bg-transparent rounded" />
             {:else}
               <input
                 type="number"
                 bind:value={stat.current}
-                class="w-16 bg-transparent border border-black rounded" />
+                class="w-16 bg-transparent rounded" />
             {/if}
           {/if}
         </td>
