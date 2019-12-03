@@ -8,6 +8,10 @@
   import Attributes from "./components/Attributes.svelte";
   import Stats from "./components/Stats.svelte";
   import Resistances from "./components/Resistances.svelte";
+  import ItemCard from "./components/ItemCard.svelte";
+  import Feat from "./components/Feat.svelte";
+  import ArmorCard from "./components/ArmorCard.svelte";
+  import ItemTable from "./components/ItemTable.svelte";
   export let chance;
 
   let rollResult = null;
@@ -15,12 +19,28 @@
   onMount(() => {
     const temp = localStorage.getItem("character");
     if (temp != null) {
-      character = JSON.parse(temp);
+      let values = JSON.parse(temp);
+      character = { ...values };
+    } else {
+      character = { ...blankCharacter };
     }
   });
 
   const save = () => {
     localStorage.setItem("character", JSON.stringify(character));
+  };
+
+  const deleteChar = () => {
+    localStorage.removeItem("character");
+  };
+
+  const newItem = {
+    name: "",
+    damage: "",
+    bonus: "",
+    type: "",
+    range: "",
+    critInfo: ""
   };
 
   const sizeOptions = [
@@ -34,7 +54,9 @@
 
   const attributes = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
 
-  let character = {
+  let character = null;
+
+  let blankCharacter = {
     name: "",
     alignment: "",
     race: "",
@@ -223,7 +245,17 @@
         total: 0
       }
     ],
-    weapons: []
+    items: [],
+    feats: [{ name: "", description: "" }],
+    armor: {
+      head: { defense: "", bonuses: "", type: "" },
+      hand: { defense: "", bonuses: "", type: "" },
+      body: { defense: "", bonuses: "", type: "" },
+      leg: { defense: "", bonuses: "", type: "" },
+      foot: { defense: "", bonuses: "", type: "" },
+      other: { defense: "", bonuses: "", type: "" }
+    },
+    items: []
   };
 
   const getRoll = (num = 1, sides = 20, sum = true) => {
@@ -231,50 +263,106 @@
   };
 </script>
 
-<main class="text-2xl md:text-3xl text-center p-4 flex flex-col">
-  <div class="flex justify-between">
-    <p>One Piece d20 Character Sheet</p>
-    <button on:click={save}>Save</button>
-    <div class="rounded border-2 border-black h-32 w-32">
+<main class="text-xl md:text-2xl text-center p-4 flex flex-col">
+  {#if character}
+    <div class="flex justify-around p-4">
+      <p>One Piece d20 Character Sheet</p>
+      <button on:click={save}>Save</button>
+      <button on:click={deleteChar}>Delete</button>
+      <!-- <div class="rounded border-2 border-black h-32 w-32">
       {#if rollResult}
         <p>{rollResult}</p>
       {/if}
+    </div> -->
     </div>
-  </div>
-  <div class="row">
-    <TextField bind:value={character.name} fieldname={'Name'} />
-    <TextField bind:value={character.alignment} fieldname={'Alignment'} />
-    <TextField bind:value={character.race} fieldname={'Race'} />
-    <TextField bind:value={character.class} fieldname={'Class'} />
-    <TextField bind:value={character.career} fieldname={'Career'} />
-  </div>
-  <div class="row">
-    <SelectField
-      bind:value={character.size}
-      fieldname={'Size'}
-      options={sizeOptions} />
-    <TextField bind:value={character.disadOne} fieldname={'Disadvantage #1'} />
-    <TextField bind:value={character.disadTwo} fieldname={'Disadvantage #2'} />
-    <TextField
-      bind:value={character.disadThree}
-      fieldname={'Disadvantage #3'} />
-  </div>
-  <div class="row">
-    <NumberField bind:value={character.level} fieldname={'Level'} />
-    <NumberField bind:value={character.experience} fieldname={'Experience'} />
-    <NumberField
-      bind:value={character.availableBeli}
-      fieldname={'Available Beli'} />
-  </div>
-  <div class="row">
-    <Attributes bind:attributes={character.attributes} />
-    <Stats bind:stats={character.stats} />
-    <Resistances bind:resistances={character.resistances} />
-  </div>
-  <div class="row">
-    <Skills
-      bind:primarySkills={character.primarySkills}
-      bind:secondarySkills={character.secondarySkills}
-      attributes={character.attributes} />
-  </div>
+    <div class="row">
+      <TextField bind:value={character.name} fieldname={'Name'} />
+      <TextField bind:value={character.alignment} fieldname={'Alignment'} />
+      <TextField bind:value={character.race} fieldname={'Race'} />
+      <TextField bind:value={character.class} fieldname={'Class'} />
+      <TextField bind:value={character.career} fieldname={'Career'} />
+    </div>
+    <div class="row">
+      <SelectField
+        bind:value={character.size}
+        fieldname={'Size'}
+        options={sizeOptions} />
+      <TextField
+        bind:value={character.disadOne}
+        fieldname={'Disadvantage #1'} />
+      <TextField
+        bind:value={character.disadTwo}
+        fieldname={'Disadvantage #2'} />
+      <TextField
+        bind:value={character.disadThree}
+        fieldname={'Disadvantage #3'} />
+    </div>
+    <div class="row">
+      <NumberField bind:value={character.level} fieldname={'Level'} />
+      <NumberField bind:value={character.experience} fieldname={'Experience'} />
+      <NumberField
+        bind:value={character.availableBeli}
+        fieldname={'Available Beli'} />
+    </div>
+    <div class="row flex-col">
+      <label>Notes</label>
+      <textarea
+        bind:value={character.notes}
+        class="border border-black rounded" />
+    </div>
+    <div class="row">
+      <Attributes bind:attributes={character.attributes} />
+      <Stats bind:stats={character.stats} />
+      <Resistances bind:resistances={character.resistances} />
+    </div>
+    <div class="row">
+      <Skills
+        bind:primarySkills={character.primarySkills}
+        bind:secondarySkills={character.secondarySkills}
+        attributes={character.attributes} />
+      <div class="flex flex-col w-1/2">
+        <div class="flex w-full text-center justify-between">
+          <button
+            class="w-1/2"
+            on:click={() => (character.items = [...character.items, { ...newItem, category: 'weapon' }])}>
+            New Weapon
+          </button>
+          <button
+            class="w-1/2"
+            on:click={() => (character.items = [...character.items, { ...newItem, category: 'accessory' }])}>
+            New Accessory
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center">
+          {#each character.items as item}
+            <ItemCard {item} />
+          {/each}
+        </div>
+      </div>
+    </div>
+    <button
+      on:click={() => (character.feats = [...character.feats, { name: '', description: '' }])}>
+      New Feat
+    </button>
+    <div class="row flex-wrap">
+      {#each character.feats as feat}
+        <Feat {feat} />
+      {/each}
+    </div>
+    <div class="row flex-wrap">
+      <ArmorCard armor={character.armor.head} location={'Head'} />
+      <ArmorCard armor={character.armor.hand} location={'Hand'} />
+      <ArmorCard armor={character.armor.body} location={'Body'} />
+      <ArmorCard armor={character.armor.foot} location={'Foot'} />
+      <ArmorCard armor={character.armor.leg} location={'Leg'} />
+      <ArmorCard armor={character.armor.other} location={'Other'} />
+    </div>
+    <div class="row items-start">
+      <ItemTable items={character.items} />
+      <button
+        on:click={() => (character.items = [...character.items, { name: '', quantity: 0, weight: 0 }])}>
+        New Item
+      </button>
+    </div>
+  {:else}Loading!{/if}
 </main>

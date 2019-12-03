@@ -12,7 +12,6 @@
       bonus: 0
     };
     secondarySkills = [...secondarySkills, blankSkill];
-    console.log(character.secondarySkills);
   };
 
   const getAttMod = baseAtt => {
@@ -36,7 +35,7 @@
   </thead>
   <tbody>
     <tr>
-      <th>Primary Skills</th>
+      <th colspan="6">Primary Skills</th>
     </tr>
     {#each primarySkills as skill, i}
       <tr class={i % 2 != 0 ? '' : 'bg-gray-400'}>
@@ -69,8 +68,12 @@
       </tr>
     {/each}
     <tr>
-      <th>Secondary Skills</th>
-      <button class="border border-black rounded" on:click={addSkill}>+</button>
+      <th colspan="4">Secondary Skills</th>
+      <th colspan="3">
+        <button class="flex justify-center items-center" on:click={addSkill}>
+          Add Skill
+        </button>
+      </th>
     </tr>
     {#each secondarySkills as skill, i}
       <tr class={i % 2 != 0 ? '' : 'bg-gray-400'}>
@@ -83,7 +86,7 @@
         <td>
           <select bind:value={skill.baseAtt} class="bg-transparent">
             {#each attributes as att}
-              <option value={att}>{att.name}</option>
+              <option value={att.name}>{att.name}</option>
             {/each}
             <option value="" />
           </select>

@@ -8,10 +8,7 @@
   <label>
     <small>{fieldname}</small>
   </label>
-  <select
-    type="text"
-    bind:value
-    class="border border-black rounded p-2 text-xl">
+  <select type="text" bind:value class="border border-black rounded p-2">
     {#each options as option}
       <option value={option}>{option.toUpperCase()}</option>
     {/each}

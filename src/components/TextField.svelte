@@ -7,8 +7,5 @@
   <label>
     <small>{fieldname}</small>
   </label>
-  <input
-    type="text"
-    bind:value
-    class="border border-black rounded p-2 text-xl" />
+  <input type="text" bind:value class="border border-black rounded p-2" />
 </div>
